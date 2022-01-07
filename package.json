@@ -1,0 +1,28 @@
+{
+  "name": "nfutils",
+  "version": "1.1.0",
+  "description": "Pacate de utilizades javascript",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevNF/nfutils.git"
+  },
+  "keywords": [
+    "utils",
+    "nfservice",
+    "nfutils",
+    "utilsjs"
+  ],
+  "author": "Desenvolvimento NFService <desenvolvimento@nfservice.com.br>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DevNF/nfutils/issues"
+  },
+  "homepage": "https://github.com/DevNF/nfutils#readme",
+  "dependencies": {
+    "moment": "^2.29.1"
+  }
+}
