@@ -335,6 +335,23 @@ export const dateNow = (type = null, format = 'YYYY-MM-DD') => {
   return moment().format(format)
 }
 
+export const isLeapYear = (year = 0) => {
+  let div = year % 4;
+  if (div === 0) {
+      div = year % 100;
+      if (div === 0) {
+          div = year % 400;
+          if (div === 0) {
+              return true;
+          }
+      } else {
+          return true;
+      }
+  }
+
+  return false;
+}
+
 export const Clicksign = (o) => {"use strict";var r,u,t=window.location.protocol+"//"+window.location.host,e={},n=function(t){(e[t]||[]).forEach(function(t){t()})},c=function(t){n(t.data)};return{endpoint:"https://app.clicksign.com",origin:t,mount:function(t){var n="/sign/"+o,e="?embedded=true&origin="+this.origin,i=this.endpoint+n+e;return u=document.getElementById(t),(r=document.createElement("iframe")).setAttribute("src",i),r.setAttribute("style","width: 100%; height: 100%;"),window.addEventListener("message",c),u.appendChild(r)},unmount:function(){return r&&(u.removeChild(r),r=u=null,window.removeEventListener("message",n)),!0},on:function(t,n){return e[t]||(e[t]=[]),e[t].push(n)},trigger:n}}
 
 export const typesImg = ['image/jpeg', 'image/jpg', 'image/gif', 'image/png']
