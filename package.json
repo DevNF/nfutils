@@ -1,7 +1,7 @@
 {
   "name": "nfutils",
-  "version": "1.1.1",
-  "description": "Pacate de utilizades javascript",
+  "version": "1.1.5",
+  "description": "Pacote de utilizades javascript",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

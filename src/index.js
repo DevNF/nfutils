@@ -31,7 +31,7 @@ export const formatValue = ({ value, separator = '.', currency = '', locale = 'p
         if (typeof valueSplit[1] === 'undefined') {
           valueSplit[1] = '00';
         } else {
-          valueSplit[1] = valueSplit[1]+'0';
+          valueSplit[1] = `${valueSplit[1]}0`;
         }
       }
       oldValue = valueSplit.join('.');
@@ -49,49 +49,54 @@ export const formatFloat = ({ value }) => {
 }
 
 export const formatPhone = ({ value }) => {
-  let oldValue = !value ? '' : String(value.replace(/[^\d]+/g, ''));
-  var valueFormated = '';
+  let oldValue = !value ? '' : String(onlyNumber(value));
+  var valueFormated = oldValue;
   if (oldValue.length > 0 && oldValue.length <= 10) {
-    valueFormated = '('+oldValue.substr(0, 2)+') '+oldValue.substr(2, 4)+'-'+oldValue.substr(6, 4)
+    valueFormated = `(${oldValue.substr(0, 2)}) ${oldValue.substr(2, 4)}-${oldValue.substr(6, 4)}`
   } else if (oldValue.length > 0 && oldValue.length === 11) {
-    valueFormated = '('+oldValue.substr(0, 2)+') '+oldValue.substr(2, 5)+'-'+oldValue.substr(7, 4)
-  } else {
-    valueFormated = oldValue
+    valueFormated = `(${oldValue.substr(0, 2)}) ${oldValue.substr(2, 5)}-${oldValue.substr(7, 4)}`
   }
 
   return valueFormated
 }
 
-export const formatCpfCnpj = ({ value, type = 'CNPJ' }) => {
-  let oldValue = !value ? '' : String(value.replace(/[^\d]+/g, ''));
-  var valueFormated = '';
-  if (type === 'CNPJ') {
+export const formatCpfCnpj = ({ value }) => {
+  let oldValue = !value ? '' : String(onlyNumber(value));
+  var valueFormated = oldValue;
+  if (oldValue.length > 11) {
     oldValue = oldValue.substr(0, 14);
     if (oldValue.length >= 13) {
-      valueFormated = oldValue.substr(0, 2)+'.'+oldValue.substr(2, 3)+'.'+oldValue.substr(5, 3)+'/'+oldValue.substr(8, 4)+'-'+oldValue.substr(12, 2);
+      valueFormated = `${oldValue.substr(0, 2)}.${oldValue.substr(2, 3)}.${oldValue.substr(5, 3)}/${oldValue.substr(8, 4)}-${oldValue.substr(12, 2)}`;
     } else if (oldValue.length >= 9) {
-      valueFormated = oldValue.substr(0, 2)+'.'+oldValue.substr(2, 3)+'.'+oldValue.substr(5, 3)+'/'+oldValue.substr(8, 4);
+      valueFormated = `${oldValue.substr(0, 2)}.${oldValue.substr(2, 3)}.${oldValue.substr(5, 3)}/${oldValue.substr(8, 4)}`;
     } else if (oldValue.length >= 6) {
-      valueFormated = oldValue.substr(0, 2)+'.'+oldValue.substr(2, 3)+'.'+oldValue.substr(5, 3);
+      valueFormated = `${oldValue.substr(0, 2)}.${oldValue.substr(2, 3)}.${oldValue.substr(5, 3)}`;
     } else if (oldValue.length >= 3) {
-      valueFormated = oldValue.substr(0, 2)+'.'+oldValue.substr(2, 3);
-    }else {
-      valueFormated = oldValue;
+      valueFormated = `${oldValue.substr(0, 2)}.${oldValue.substr(2, 3)}`;
     }
   } else {
     oldValue = oldValue.substr(0, 11);
     if (oldValue.length >= 10) {
-      valueFormated = oldValue.substr(0, 3)+'.'+oldValue.substr(3, 3)+'.'+oldValue.substr(6, 3)+'-'+oldValue.substr(9, 2);
+      valueFormated = `${oldValue.substr(0, 3)}.${oldValue.substr(3, 3)}.${oldValue.substr(6, 3)}-${oldValue.substr(9, 2)}`;
     } else if (oldValue.length >= 7) {
-      valueFormated = oldValue.substr(0, 3)+'.'+oldValue.substr(3, 3)+'.'+oldValue.substr(6, 3);
+      valueFormated = `${oldValue.substr(0, 3)}.${oldValue.substr(3, 3)}.${oldValue.substr(6, 3)}`;
     } else if (oldValue.length >= 4) {
-      valueFormated = oldValue.substr(0, 3)+'.'+oldValue.substr(3, 3);
-    } else {
-      valueFormated = oldValue;
+      valueFormated = `${oldValue.substr(0, 3)}.${oldValue.substr(3, 3)}`;
     }
   }
 
   return valueFormated;
+}
+
+export const formatPlate = ({ value }) => {
+  let oldValue = !value ? '' : String(value.replace(/[^\da-zA-Z]+/g, ''));
+  let valueFormated = oldValue;
+  oldValue = oldValue.substr(0, 7);
+  if (oldValue.length >= 4) {
+    valueFormated = `${oldValue.substr(0, 3)}-${oldValue.substr(3, 4)}`;
+  }
+
+  return valueFormated.toUpperCase();
 }
 
 //Abacate
@@ -197,6 +202,19 @@ export const isCnpj = value => {
       return ((value[12] == digito1) && (value[13] == digito2));
 
   }
+}
+
+export const isCpfCnpj = value => {
+  // Elimina possivel mascara
+  value = onlyNumber(value);
+
+  if (value.length === 11) {
+    return isCpf(value);
+  } else if (value.length === 14) {
+    return isCnpj(value);
+  }
+
+  return false;
 }
 
 export const onlyNumber = value => {
