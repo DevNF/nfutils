@@ -312,7 +312,7 @@ export const diffDate = ({dateOne, dateTwo, type = 'M', incrementTotal = 0, notN
     diff *= -1;
   }
 
-  return diff;
+  return parseInt(diff.toFixed(0));
 }
 
 export function isMobile() {
