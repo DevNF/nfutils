@@ -293,26 +293,19 @@ export const removeDateYears = (date, quantity = 1) => {
   return newDate.setFullYear(newDate.getFullYear() - quantity);
 }
 
-export const diffDate = ({dateOne, dateTwo, type = 'M', incrementTotal = 0, notNegative = false}) => {
-  let now = new Date(dateOne);
-  let date = new Date(dateTwo);
+export const diffDate = ({dateOne, dateTwo, type = 'months', incrementTotal = 0, notNegative = false}) => {
+  let now = moment(dateOne);
+  let date = moment(dateTwo);
 
   let diff = 0;
-  if (type === 'M') {
-    diff = Math.ceil(date.getMonth() - now.getMonth());
-    if (date.getFullYear() > now.getFullYear()) {
-      diff += ((date.getFullYear() - now.getFullYear()) * 12);
-    }
-  } else if (type === 'D') {
-    diff = (now - date)/86400000;
-  }
+  diff = now.diff(date, type)
   diff += incrementTotal;
 
   if (notNegative && diff < 0) {
     diff *= -1;
   }
 
-  return parseInt(diff.toFixed(0));
+  return diff;
 }
 
 export function isMobile() {
