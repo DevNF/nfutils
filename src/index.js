@@ -53,7 +53,7 @@ export const formatPhone = ({ value }) => {
   var valueFormated = oldValue;
   if (oldValue.length > 0 && oldValue.length <= 10) {
     valueFormated = `(${oldValue.substr(0, 2)}) ${oldValue.substr(2, 4)}-${oldValue.substr(6, 4)}`
-  } else if (oldValue.length > 0 && oldValue.length === 11) {
+  } else if (oldValue.length > 0 && oldValue.length >= 11) {
     valueFormated = `(${oldValue.substr(0, 2)}) ${oldValue.substr(2, 5)}-${oldValue.substr(7, 4)}`
   }
 
@@ -97,6 +97,30 @@ export const formatPlate = ({ value }) => {
   }
 
   return valueFormated.toUpperCase();
+}
+
+export const formatDigitableLine = (value) => {
+  let oldValue = onlyNumber(value).substr(0, 48);
+  value = '';
+  if (oldValue.length >= 34) {
+    value = `${oldValue.substr(0, 5)}.${oldValue.substr(5, 5)} ${oldValue.substr(10, 5)}.${oldValue.substr(15, 6)} ${oldValue.substr(21, 5)}.${oldValue.substr(26, 6)} ${oldValue.substr(32, 1)} ${oldValue.substr(33)}`
+  } else if (oldValue.length >= 33) {
+    value = `${oldValue.substr(0, 5)}.${oldValue.substr(5, 5)} ${oldValue.substr(10, 5)}.${oldValue.substr(15, 6)} ${oldValue.substr(21, 5)}.${oldValue.substr(26, 6)} ${oldValue.substr(32, 1)}`
+  } else if (oldValue.length >= 27) {
+    value = `${oldValue.substr(0, 5)}.${oldValue.substr(5, 5)} ${oldValue.substr(10, 5)}.${oldValue.substr(15, 6)} ${oldValue.substr(21, 5)}.${oldValue.substr(26, 6)}`
+  } else if (oldValue.length >= 22) {
+    value = `${oldValue.substr(0, 5)}.${oldValue.substr(5, 5)} ${oldValue.substr(10, 5)}.${oldValue.substr(15, 6)} ${oldValue.substr(21, 5)}`
+  } else if (oldValue.length >= 16) {
+    value = `${oldValue.substr(0, 5)}.${oldValue.substr(5, 5)} ${oldValue.substr(10, 5)}.${oldValue.substr(15, 6)}`
+  } else if (oldValue.length >= 11) {
+    value = `${oldValue.substr(0, 5)}.${oldValue.substr(5, 5)} ${oldValue.substr(10, 5)}`
+  } else if (oldValue.length >= 6) {
+    value = `${oldValue.substr(0, 5)}.${oldValue.substr(5, 5)}`
+  } else {
+    value = `${oldValue.substr(0, 5)}`
+  }
+
+  return value
 }
 
 //Abacate
@@ -239,7 +263,7 @@ export const formatDate = ({ value, location = 'Br', format = 'DateHour' }) => {
       } else if (format === 'Date') {
         valueFormated = moment(value).format('DD/MM/YYYY');
       }
-    } else if ('Date') {
+    } else if (location === 'En') {
       if (format === 'DateHour') {
         valueFormated = moment(value).format('YYYY-MM-DD HH:mm:ss');
       } else if (format === 'Date') {
@@ -308,7 +332,7 @@ export const diffDate = ({dateOne, dateTwo, type = 'months', incrementTotal = 0,
   return diff;
 }
 
-export function isMobile() {
+export const isMobile = () => {
     if( navigator.userAgent.match(/Android/i)
     || navigator.userAgent.match(/webOS/i)
     || navigator.userAgent.match(/iPhone/i)
@@ -322,9 +346,23 @@ export function isMobile() {
     else {
       return false;
     }
+}
+
+export const extractUrlParams = url => {
+  let data = url.split('?')
+  let params = {}
+  if (data[1]) {
+    data = data[1].split('&');
+    for (let p of data) {
+      let param = p.split('=')
+      params[param[0]] = param[1]
+    }
   }
 
-export function multiple (...args) {
+  return params
+}
+
+export const multiple = (...args) => {
   let totMultiple = args.map((value) => {
     let valueCorrect = 0;
     if (!isNaN(parseFloat(String(value).replace(',', '.')))) {
