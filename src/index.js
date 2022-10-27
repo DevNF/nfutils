@@ -51,10 +51,14 @@ export const formatFloat = ({ value }) => {
 export const formatPhone = ({ value }) => {
   let oldValue = !value ? '' : String(onlyNumber(value));
   var valueFormated = oldValue;
-  if (oldValue.length > 0 && oldValue.length <= 10) {
+  if (oldValue.length >= 11) {
+    valueFormated = `(${oldValue.substr(0, 2)}) ${oldValue.substr(2, 1)} ${oldValue.substr(3, 4)}-${oldValue.substr(7, 4)}`
+  } else if (oldValue.length >= 7) {
     valueFormated = `(${oldValue.substr(0, 2)}) ${oldValue.substr(2, 4)}-${oldValue.substr(6, 4)}`
-  } else if (oldValue.length > 0 && oldValue.length >= 11) {
-    valueFormated = `(${oldValue.substr(0, 2)}) ${oldValue.substr(2, 5)}-${oldValue.substr(7, 4)}`
+  } else if (oldValue.length >= 3) {
+    valueFormated = `(${oldValue.substr(0, 2)}) ${oldValue.substr(2, 4)}`
+  } else if (oldValue.length >= 1) {
+    valueFormated = `(${oldValue.substr(0, 2)}`
   }
 
   return valueFormated
