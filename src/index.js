@@ -106,7 +106,9 @@ export const formatPlate = ({ value }) => {
 export const formatDigitableLine = (value) => {
   let oldValue = onlyNumber(value).substr(0, 48);
   value = '';
-  if (oldValue.length >= 34) {
+  if (oldValue.length >= 48 && oldValue[0] == '8') {
+    value = `${oldValue.substr(0, 11)} ${oldValue.substr(11, 1)} ${oldValue.substr(12, 11)} ${oldValue.substr(23, 1)} ${oldValue.substr(24, 11)} ${oldValue.substr(35, 1)} ${oldValue.substr(36, 11)} ${oldValue.substr(47, 1)}`;
+  } else if (oldValue.length >= 34) {
     value = `${oldValue.substr(0, 5)}.${oldValue.substr(5, 5)} ${oldValue.substr(10, 5)}.${oldValue.substr(15, 6)} ${oldValue.substr(21, 5)}.${oldValue.substr(26, 6)} ${oldValue.substr(32, 1)} ${oldValue.substr(33)}`
   } else if (oldValue.length >= 33) {
     value = `${oldValue.substr(0, 5)}.${oldValue.substr(5, 5)} ${oldValue.substr(10, 5)}.${oldValue.substr(15, 6)} ${oldValue.substr(21, 5)}.${oldValue.substr(26, 6)} ${oldValue.substr(32, 1)}`
